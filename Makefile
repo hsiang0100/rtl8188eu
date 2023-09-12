@@ -419,7 +419,7 @@ modules:
 	@echo "CROSS_COMPILE = $(CROSS_COMPILE)"
 	@echo "KSRC = $(KSRC)"
 	@echo "CURDIR = $(CURDIR)"
-        $(MAKE) ARCH=$(ARCH) CROSS_COMPILE=$(CROSS_COMPILE) -C $(KERNEL_SRC) M=$(shell pwd) modules
+	$(MAKE) ARCH=$(ARCH) CROSS_COMPILE=$(CROSS_COMPILE) -C $(KERNEL_SRC) M=$(shell pwd) modules
 
 modules_install:
         $(MAKE) -C $(KERNEL_SRC) M=$(shell pwd) modules_install
