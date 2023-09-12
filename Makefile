@@ -422,7 +422,7 @@ modules:
 	$(MAKE) ARCH=$(ARCH) CROSS_COMPILE=$(CROSS_COMPILE) -C $(KERNEL_SRC) M=$(shell pwd) modules
 
 modules_install:
-        $(MAKE) -C $(KERNEL_SRC) M=$(shell pwd) modules_install
+	$(MAKE) -C $(KERNEL_SRC) M=$(shell pwd) modules_install
 
 strip:
 	$(CROSS_COMPILE)strip 8188eu.ko --strip-unneeded
