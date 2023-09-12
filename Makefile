@@ -413,12 +413,19 @@ else
 all: modules
 
 modules:
+	@echo "MAKE = $(MAKE)"
+	@echo "ARCH = $(ARCH)"
+	@echo "CROSS_COMPILE = $(CROSS_COMPILE)"
+	@echo "KSRC = $(KSRC)"
+	@echo "CURDIR = $(CURDIR)"
+
 	$(MAKE) ARCH=$(ARCH) CROSS_COMPILE=$(CROSS_COMPILE) -C $(KSRC) M=$(CURDIR)  modules
 
 strip:
 	$(CROSS_COMPILE)strip 8188eu.ko --strip-unneeded
 
 install:
+	@echo "MODDESTDIR = $(MODDESTDIR)"
 	@mkdir -p $(MODDESTDIR)
 	install -p -m 644 8188eu.ko  $(MODDESTDIR)
 	/sbin/depmod -a ${KVER}
@@ -440,5 +447,7 @@ clean:
 	rm -fr Module.symvers ; rm -fr Module.markers ; rm -fr modules.order
 	rm -fr *.mod.c *.mod *.o .*.cmd *.ko *~
 	rm -fr .tmp_versions
+
 endif
+
 
