@@ -126,8 +126,10 @@
 
 typedef struct	semaphore _sema;
 #ifdef CONFIG_PREEMPT_RT
-typedef	raw_spinlock_t	_lock;
+111
+typedef	spinlock_t	_lock;
 #else
+222
 typedef	spinlock_t	_lock;
 #endif
 #if (LINUX_VERSION_CODE >= KERNEL_VERSION(2, 6, 37))
