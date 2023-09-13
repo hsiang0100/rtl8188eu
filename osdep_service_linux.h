@@ -127,7 +127,7 @@
 typedef struct	semaphore _sema;
 #ifdef CONFIG_PREEMPT_RT
 111
-typedef	spinlock_t	_lock;
+typedef	raw_spinlock_t	_lock;
 #else
 222
 typedef	spinlock_t	_lock;
