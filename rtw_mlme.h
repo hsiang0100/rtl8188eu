@@ -963,32 +963,72 @@ static inline void _clr_fwstate_(struct mlme_priv *pmlmepriv, sint state)
  * therefore set it to be the critical section...
  */
 static inline void clr_fwstate(struct mlme_priv *pmlmepriv, sint state)
-{
-	spin_lock_bh(&pmlmepriv->lock);
+{	
+	#ifdef CONFIG_PREEMPT_RT
+	    raw_spin_lock_bh(&pmlmepriv->lock);
+	#else
+	    spin_lock_bh(&pmlmepriv->lock);
+	#endif
+
 	_clr_fwstate_(pmlmepriv, state);
-	spin_unlock_bh(&pmlmepriv->lock);
+	
+	#ifdef CONFIG_PREEMPT_RT
+	    raw_spin_unlock_bh(&pmlmepriv->lock);
+	#else
+	    spin_unlock_bh(&pmlmepriv->lock);
+	#endif
 }
 
 static inline void up_scanned_network(struct mlme_priv *pmlmepriv)
 {
-	spin_lock_bh(&pmlmepriv->lock);
+	#ifdef CONFIG_PREEMPT_RT
+	    raw_spin_lock_bh(&pmlmepriv->lock);
+	#else
+	    spin_lock_bh(&pmlmepriv->lock);
+	#endif
+	
 	pmlmepriv->num_of_scanned++;
-	spin_unlock_bh(&pmlmepriv->lock);
+
+	#ifdef CONFIG_PREEMPT_RT
+	    raw_spin_unlock_bh(&pmlmepriv->lock);
+	#else
+	    spin_unlock_bh(&pmlmepriv->lock);
+	#endif
 }
 u8 rtw_is_adapter_up(_adapter *padapter);
 
 __inline static void down_scanned_network(struct mlme_priv *pmlmepriv)
-{
-	spin_lock_bh(&pmlmepriv->lock);
+{	
+	#ifdef CONFIG_PREEMPT_RT
+	    raw_spin_lock_bh(&pmlmepriv->lock);
+	#else
+	    spin_lock_bh(&pmlmepriv->lock);
+	#endif
+
 	pmlmepriv->num_of_scanned--;
-	spin_unlock_bh(&pmlmepriv->lock);
+
+	#ifdef CONFIG_PREEMPT_RT
+	    raw_spin_unlock_bh(&pmlmepriv->lock);
+	#else
+	    spin_unlock_bh(&pmlmepriv->lock);
+	#endif
 }
 
 __inline static void set_scanned_network_val(struct mlme_priv *pmlmepriv, sint val)
 {
-	spin_lock_bh(&pmlmepriv->lock);
+	#ifdef CONFIG_PREEMPT_RT
+	    raw_spin_lock_bh(&pmlmepriv->lock);
+	#else
+	    spin_lock_bh(&pmlmepriv->lock);
+	#endif
+	
 	pmlmepriv->num_of_scanned = val;
-	spin_unlock_bh(&pmlmepriv->lock);
+
+	#ifdef CONFIG_PREEMPT_RT
+	    raw_spin_unlock_bh(&pmlmepriv->lock);
+	#else
+	    spin_unlock_bh(&pmlmepriv->lock);
+	#endif
 }
 
 extern u16 rtw_get_capability(WLAN_BSSID_EX *bss);
