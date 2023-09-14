@@ -122,8 +122,12 @@ void rtw_hal_dm_init(_adapter *padapter)
 		PHAL_DATA_TYPE	pHalData = GET_HAL_DATA(padapter);
 
 		padapter->hal_func.dm_init(padapter);
-
+		
+#ifdef CONFIG_PREEMPT_RT
+    		raw_spin_lock_init(&pHalData->IQKSpinLock);
+#else
 		spin_lock_init(&pHalData->IQKSpinLock);
+#endif
 
 		phy_load_tx_power_ext_info(padapter, 1);
 	}
