@@ -36,8 +36,11 @@ void _rtw_init_sta_recv_priv(struct sta_recv_priv *psta_recvpriv)
 
 
 	memset((u8 *)psta_recvpriv, 0, sizeof(struct sta_recv_priv));
-
-	spin_lock_init(&psta_recvpriv->lock);
+#ifdef CONFIG_PREEMPT_RT
+    	raw_spin_lock_init(&psta_recvpriv->lock);
+#else
+    	spin_lock_init(&psta_recvpriv->lock);
+#endif
 
 	/* for(i=0; i<MAX_RX_NUMBLKS; i++) */
 	/*	_rtw_init_queue(&psta_recvpriv->blk_strms[i]); */
