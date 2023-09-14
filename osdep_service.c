@@ -666,7 +666,12 @@ void	_rtw_mutex_free(_mutex *pmutex)
 void _rtw_init_queue(_queue *pqueue)
 {
 	INIT_LIST_HEAD(&(pqueue->queue));
+
+#ifdef CONFIG_PREEMPT_RT
+    	raw_spin_lock_init(&(pqueue->lock));
+#else
 	spin_lock_init(&(pqueue->lock));
+#endif
 }
 
 u32	  _rtw_queue_empty(_queue	*pqueue)
