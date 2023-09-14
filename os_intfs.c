@@ -1739,7 +1739,11 @@ struct dvobj_priv *devobj_init(void)
 	ATOMIC_SET(&pdvobj->disable_func, 0);
 
 	rtw_macid_ctl_init(&pdvobj->macid_ctl);
+#ifdef CONFIG_PREEMPT_RT
+    	raw_spin_lock_init(&pdvobj->cam_ctl.lock);
+#else
 	spin_lock_init(&pdvobj->cam_ctl.lock);
+#endif
 	_rtw_mutex_init(&pdvobj->cam_ctl.sec_cam_access_mutex);
 #ifdef CONFIG_MBSSID_CAM
 	rtw_mbid_cam_init(pdvobj);
@@ -2023,7 +2027,11 @@ u8 rtw_init_drv_sw(_adapter *padapter)
 #endif
 
 #ifdef CONFIG_BR_EXT
+#ifdef CONFIG_PREEMPT_RT
+    	raw_spin_lock_init(&padapter->br_ext_lock);
+#else
 	spin_lock_init(&padapter->br_ext_lock);
+#endif
 #endif /* CONFIG_BR_EXT */
 
 #ifdef CONFIG_BEAMFORMING
