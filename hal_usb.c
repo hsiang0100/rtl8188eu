@@ -54,7 +54,12 @@ int	usb_init_recv_priv(_adapter *padapter, u16 ini_in_buf_sz)
 	for (i = 0; i < NR_RECVBUFF ; i++) {
 		INIT_LIST_HEAD(&precvbuf->list);
 
-		spin_lock_init(&precvbuf->recvbuf_lock);
+#ifdef CONFIG_PREEMPT_RT
+    		raw_spin_lock_init(&precvbuf->recvbuf_lock);
+#else
+    		spin_lock_init(&precvbuf->recvbuf_lock);
+#endif
+		
 
 		precvbuf->alloc_sz = MAX_RECVBUF_SZ;
 
