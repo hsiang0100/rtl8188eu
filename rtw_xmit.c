@@ -22,8 +22,11 @@ void	_rtw_init_sta_xmit_priv(struct sta_xmit_priv *psta_xmitpriv)
 
 	memset((unsigned char *)psta_xmitpriv, 0, sizeof(struct sta_xmit_priv));
 
+#ifdef CONFIG_PREEMPT_RT
+    	raw_spin_lock_init(&psta_xmitpriv->lock);
+#else
 	spin_lock_init(&psta_xmitpriv->lock);
-
+#endif
 	/* for(i = 0 ; i < MAX_NUMBLKS; i++) */
 	/*	_init_txservq(&(psta_xmitpriv->blk_q[i])); */
 
