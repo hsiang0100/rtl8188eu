@@ -332,7 +332,11 @@ void rtw_free_recvframe_queue(_queue *pframequeue,  _queue *pfree_recv_queue)
 	union	recv_frame	*precvframe;
 	_list	*plist, *phead;
 
+#ifdef CONFIG_PREEMPT_RT
+    	raw_spin_lock_init(&pframequeue->lock);
+#else
 	spin_lock(&pframequeue->lock);
+#endif
 
 	phead = get_list_head(pframequeue);
 	plist = get_next(phead);
