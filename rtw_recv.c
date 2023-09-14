@@ -356,7 +356,11 @@ void rtw_free_recvframe_queue(_queue *pframequeue,  _queue *pfree_recv_queue)
 	}
 
 	spin_unlock(&pframequeue->lock);
-
+#ifdef CONFIG_PREEMPT_RT
+    	raw_spin_unlock(&pframequeue->lock);
+#else
+	spin_unlock(&pframequeue->lock);
+#endif
 
 }
 
