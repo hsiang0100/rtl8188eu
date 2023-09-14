@@ -3480,9 +3480,9 @@ inline void rtw_macid_ctl_set_rate_bmp1(struct macid_ctl_t *macid_ctl, u8 id, u3
 inline void rtw_macid_ctl_init(struct macid_ctl_t *macid_ctl)
 {
 #ifdef CONFIG_PREEMPT_RT
-	raw_spin_lock_init(&(some_variable->lock));
+	raw_spin_lock_init(&(macid_ctl->lock));
 #else
-	spin_lock_init(&(some_variable->lock));
+	spin_lock_init(&(macid_ctl->lock));
 #endif
 }
 
