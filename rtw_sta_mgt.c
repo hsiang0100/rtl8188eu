@@ -252,8 +252,15 @@ u32	_rtw_init_sta_priv(struct	sta_priv *pstapriv)
 
 	INIT_LIST_HEAD(&pstapriv->asoc_list);
 	INIT_LIST_HEAD(&pstapriv->auth_list);
+
+#ifdef CONFIG_PREEMPT_RT
+	raw_spin_lock_init(&pstapriv->asoc_list_lock);
+	raw_spin_lock_init(&pstapriv->auth_list_lock);
+#else
 	spin_lock_init(&pstapriv->asoc_list_lock);
 	spin_lock_init(&pstapriv->auth_list_lock);
+#endif
+
 	pstapriv->asoc_list_cnt = 0;
 	pstapriv->auth_list_cnt = 0;
 
