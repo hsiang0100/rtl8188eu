@@ -394,7 +394,11 @@ sint rtw_enqueue_recvbuf(struct recv_buf *precvbuf, _queue *queue)
 	list_del_init(&precvbuf->list);
 
 	list_add_tail(&precvbuf->list, get_list_head(queue));
+#ifdef CONFIG_PREEMPT_RT
+	raw_spin_unlock_irqrestore(&queue->lock, irqL);
+#else
 	spin_unlock_irqrestore(&queue->lock, irqL);
+#endif
 	return _SUCCESS;
 }
 
