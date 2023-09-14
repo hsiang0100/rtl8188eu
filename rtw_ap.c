@@ -20,7 +20,11 @@ void init_mlme_ap_info(_adapter *padapter)
 	struct mlme_priv *pmlmepriv = &(padapter->mlmepriv);
 
 	spin_lock_init(&pmlmepriv->bcn_update_lock);
-
+#ifdef CONFIG_PREEMPT_RT
+    	raw_spin_lock_init(&pmlmepriv->bcn_update_lock);
+#else
+	spin_lock_init(&pmlmepriv->bcn_update_lock);
+#endif
 	/* pmlmeext->bstart_bss = false; */
 
 }
