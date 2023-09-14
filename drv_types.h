@@ -1061,7 +1061,7 @@ struct _ADAPTER {
 	struct	recv_priv	recvpriv;
 	struct	sta_priv	stapriv;
 	struct	security_priv	securitypriv;
-	spinlock_t security_key_mutex; /* add for CONFIG_IEEE80211W, non 11w also can use */
+	_lock security_key_mutex; /* add for CONFIG_IEEE80211W, non 11w also can use */
 	struct	registry_priv	registrypriv;
 
 	struct	led_priv	ledpriv;
