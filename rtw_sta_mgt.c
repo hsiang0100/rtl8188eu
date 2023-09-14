@@ -219,8 +219,12 @@ u32	_rtw_init_sta_priv(struct	sta_priv *pstapriv)
 
 	_rtw_init_queue(&pstapriv->free_sta_queue);
 
+#ifdef CONFIG_PREEMPT_RT
+    	raw_spin_lock_init(&pstapriv->sta_hash_lock);
+#else
 	spin_lock_init(&pstapriv->sta_hash_lock);
-
+#endif
+	
 	/* _rtw_init_queue(&pstapriv->asoc_q); */
 	pstapriv->asoc_sta_count = 0;
 	_rtw_init_queue(&pstapriv->sleep_q);
