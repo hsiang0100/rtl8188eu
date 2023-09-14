@@ -61,8 +61,12 @@ sint _rtw_init_recv_priv(struct recv_priv *precvpriv, _adapter *padapter)
 	/* We don't need to memset padapter->XXX to zero, because adapter is allocated by rtw_zvmalloc(). */
 	/* memset((unsigned char *)precvpriv, 0, sizeof (struct  recv_priv)); */
 
+#ifdef CONFIG_PREEMPT_RT
+    	raw_spin_lock_init(&precvpriv->lock);
+#else
 	spin_lock_init(&precvpriv->lock);
-
+#endif
+	
 #ifdef CONFIG_RECV_THREAD_MODE
 	sema_init(&precvpriv->recv_sema, 0);
 	sema_init(&precvpriv->terminate_recvthread_sema, 0);
