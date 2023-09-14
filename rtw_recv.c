@@ -355,7 +355,6 @@ void rtw_free_recvframe_queue(_queue *pframequeue,  _queue *pfree_recv_queue)
 		rtw_free_recvframe(precvframe, pfree_recv_queue);
 	}
 
-	spin_unlock(&pframequeue->lock);
 #ifdef CONFIG_PREEMPT_RT
     	raw_spin_unlock(&pframequeue->lock);
 #else
@@ -430,8 +429,11 @@ struct recv_buf *rtw_dequeue_recvbuf(_queue *queue)
 		list_del_init(&precvbuf->list);
 	}
 
+#ifdef CONFIG_PREEMPT_RT
+	raw_spin_unlock_irqrestore(&queue->lock, irqL);
+#else
 	spin_unlock_irqrestore(&queue->lock, irqL);
-
+#endif
 	return precvbuf;
 }
 
