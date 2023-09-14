@@ -145,8 +145,11 @@ void _rtw_init_stainfo(struct sta_info *psta)
 
 
 	memset((u8 *)psta, 0, sizeof(struct sta_info));
-
-	spin_lock_init(&psta->lock);
+	#ifdef CONFIG_PREEMPT_RT
+		raw_spin_lock_init(&psta->lock);
+	#else
+		spin_lock_init(&psta->lock);
+	#endif
 	INIT_LIST_HEAD(&psta->list);
 	INIT_LIST_HEAD(&psta->hash_list);
 	/* INIT_LIST_HEAD(&psta->asoc_list); */
