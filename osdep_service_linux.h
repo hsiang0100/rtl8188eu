@@ -243,23 +243,28 @@ __inline static void _enter_critical_ex(_lock *plock, unsigned long *pirqL)
 }
 
 #endif
+
+#ifdef CONFIG_PREEMPT_RT
 __inline static void _enter_critical_bh(_lock *plock, unsigned long *pirqL)
 {
-	#ifdef CONFIG_PREEMPT_RT
 	    raw_spin_lock_bh(plock);
-	#else
-	    spin_lock_bh(plock);
-	#endif
 }
 
 __inline static void _exit_critical_bh(_lock *plock, unsigned long *pirqL)
 {
-	#ifdef CONFIG_PREEMPT_RT
 	    raw_spin_unlock_bh(plock);
-	#else
-	    spin_unlock_bh(plock);
-	#endif
 }
+#else
+__inline static void _enter_critical_bh(_lock *plock, unsigned long *pirqL)
+{
+	    spin_lock_bh(plock);
+}
+
+__inline static void _exit_critical_bh(_lock *plock, unsigned long *pirqL)
+{
+	    spin_unlock_bh(plock);
+}
+#endif
 
 __inline static int _enter_critical_mutex(_mutex *pmutex, unsigned long *pirqL)
 {
