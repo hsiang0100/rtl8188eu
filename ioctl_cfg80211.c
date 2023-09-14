@@ -6927,8 +6927,11 @@ int rtw_wdev_alloc(_adapter *padapter, struct wiphy *wiphy)
 	pwdev_priv->ifname_mon[0] = '\0';
 	pwdev_priv->padapter = padapter;
 	pwdev_priv->scan_request = NULL;
+#ifdef CONFIG_PREEMPT_RT
+	raw_spin_lock_init(&pwdev_priv->scan_req_lock);
+#else
 	spin_lock_init(&pwdev_priv->scan_req_lock);
-
+#endif
 	pwdev_priv->p2p_enabled = false;
 	pwdev_priv->probe_resp_ie_update_time = jiffies;
 	pwdev_priv->provdisc_req_issued = false;
